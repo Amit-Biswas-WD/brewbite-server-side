@@ -25,17 +25,28 @@ async function run() {
     await client.connect();
     // Send a ping to confirm a successful connection
 
-    const categoryCollection = client.db("Brew_Bite").collection("category");
+    const categoryCollection = client.db("Brew_Bite").collection("coffees");
+    const ordersCollection = client.db("Brew_Bite").collection("orders");
 
-    app.get("/category", async (req, res) => {
+    // coffees some data
+    app.get("/coffees", async (req, res) => {
       const result = await categoryCollection.find().toArray();
       res.send(result);
     });
 
-    app.get("/category/:id", async (req, res) => {
+    // coffees single data
+    app.get("/coffees/:id", async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
       const result = await categoryCollection.findOne(query);
+      res.send(result);
+    });
+
+    // create orders data
+    app.post("/orders", async (req, res) => {
+      const orders = req.body;
+      console.log(orders);
+      const result = await ordersCollection.insertOne(orders);
       res.send(result);
     });
 
