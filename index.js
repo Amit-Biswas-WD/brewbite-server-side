@@ -45,8 +45,20 @@ async function run() {
     // create orders data
     app.post("/orders", async (req, res) => {
       const orders = req.body;
-      console.log(orders);
       const result = await ordersCollection.insertOne(orders);
+      res.send(result);
+    });
+
+    // Specific email some orders data
+    app.get("/orders", async (req, res) => {
+      const email = req.query?.email;
+      let query = {};
+
+      if (email) {
+        query = { email: email };
+      }
+
+      const result = await ordersCollection.find(query).toArray();
       res.send(result);
     });
 
