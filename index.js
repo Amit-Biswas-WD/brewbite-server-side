@@ -61,19 +61,41 @@ async function run() {
       res.send(result);
     });
 
-    // order specific id
+    // orders single data
     app.get("/orders/:id", async (req, res) => {
       const id = req.params.id;
-      console.log(id);
       const query = { _id: new ObjectId(id) };
       const result = await ordersCollection.findOne(query);
       res.send(result);
     });
 
+    // order delete specific id
     app.delete("/orders/:id", async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
       const result = await ordersCollection.deleteOne(query);
+      res.send(result);
+    });
+
+    // order Update specific id
+    app.put("/orders/:id", async (req, res) => {
+      const id = req.params.id;
+      const updatedInfo = req.body;
+      console.log(updatedInfo);
+      const filter = { _id: new ObjectId(id) };
+      const options = { upsert: true };
+      const updateValue = {
+        $set: {
+          "customerInfo.customerName": updatedInfo.customerName,
+          "customerInfo.orderDate": updatedInfo.orderDate,
+          "customerInfo.location": updatedInfo.location,
+        },
+      };
+      const result = await ordersCollection.updateOne(
+        filter,
+        updateValue,
+        options
+      );
       res.send(result);
     });
 
