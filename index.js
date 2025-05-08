@@ -7,10 +7,14 @@ const port = process.env.PORT || 5000;
 
 app.use(
   cors({
-    origin: ["https://history-client-side-66e3d.web.app"],
+    origin: [
+      "https://history-client-side-66e3d.web.app",
+      "https://brewbite-client-side.vercel.app",
+    ],
     credentials: true,
   })
 );
+
 app.use(express.json());
 
 const uri = `mongodb+srv://${process.env.DB_User}:${process.env.DB_Pass}@cluster0.zyvach0.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
