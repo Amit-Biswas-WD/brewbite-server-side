@@ -7,10 +7,7 @@ const port = process.env.PORT || 5000;
 
 app.use(
   cors({
-    origin: [
-      "http://localhost:5173",
-      "https://history-client-side-66e3d.web.app",
-    ],
+    origin: ["https://history-client-side-66e3d.web.app"],
     credentials: true,
   })
 );
@@ -32,12 +29,27 @@ async function run() {
     await client.connect();
     // Send a ping to confirm a successful connection
 
-    const categoryCollection = client.db("Brew_Bite").collection("coffees");
+    const coffeesCollection = client.db("Brew_Bite").collection("coffees");
     const ordersCollection = client.db("Brew_Bite").collection("orders");
+    const categoryCollection = client.db("Brew_Bite").collection("category");
+
+    // category some data
+    app.get("/category", async (req, res) => {
+      const result = await categoryCollection.find().toArray();
+      res.send(result);
+    });
+
+    // category single data
+    app.get("/category/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await coffeesCollection.findOne(query);
+      res.send(result);
+    });
 
     // coffees some data
     app.get("/coffees", async (req, res) => {
-      const result = await categoryCollection.find().toArray();
+      const result = await coffeesCollection.find().toArray();
       res.send(result);
     });
 
@@ -45,7 +57,7 @@ async function run() {
     app.get("/coffees/:id", async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
-      const result = await categoryCollection.findOne(query);
+      const result = await coffeesCollection.findOne(query);
       res.send(result);
     });
 
