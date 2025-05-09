@@ -8,8 +8,8 @@ const port = process.env.PORT || 5000;
 app.use(
   cors({
     origin: [
+      "http://localhost:5173",
       "https://history-client-side-66e3d.web.app",
-      "https://brewbite-client-side.vercel.app",
     ],
     credentials: true,
   })
